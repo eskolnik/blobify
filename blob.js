@@ -222,28 +222,28 @@ const getLetterMask = letter =>
 
 const padRow = [0, 0, 0, 0, 0];
 
-const padLetter = letterMask => [
-	padRow,
-	...letterMask.map(row => [0, ...row, 0]),
-	padRow
-]
+const padLetter = (letterMask, padding=true) => {
+	const hPaddedLetter = letterMask.map(row => [0, ...row, 0]);
+	//only apply vertical padding if flag is set
+	return padding ? [padRow, ...hPaddedLetter, padRow] : hPaddedLetter
+}
 
 const appendMask = (baseMask, newMask) =>
 	baseMask.map((baseRow, index) => baseRow.concat(newMask[index]))
 
-const stringToMask = string =>
+const stringToMask = (string, padding=true) =>
 	string.toUpperCase()
 		.split('')
-		.map(char => padLetter(getLetterMask(char)))
+		.map(char => padLetter(getLetterMask(char), padding))
 		.reduce(appendMask)
 
 const prettyPrint = canvas => canvas.map(line => line.join('')).join('\n');
 
-const blobify = string => {
+const blobify = (string, padding=true) => {
 	if (!string || string.length <= 0) {
 		return '';
 	}
-	const mask = stringToMask(string);
+	const mask = stringToMask(string, padding);
 	const renderer = makeMaskRenderer(mask);
 	const canvas = makeCanvas(mask.length, mask[0].length, renderer)
 	return prettyPrint(canvas);

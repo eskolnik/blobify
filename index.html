@@ -4,7 +4,7 @@
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <style>
-      body {
+      .page {
         display: flex;
         padding: 0;
         margin: 0;
@@ -16,6 +16,18 @@
       }
       .blobForm {
         margin: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+
+      }
+
+      input {
+        margin-bottom: 10px;
+      }
+      .formSubmit {
+        margin-left: 10px;
       }
 
       .blobText {
@@ -37,7 +49,8 @@
           super(props);
           this.state={
             blobText: '',
-            formValue: ''
+            formValue: '',
+            padding: true
           }
         }
 
@@ -45,30 +58,38 @@
           this.setState({ formValue: e.target.value });
         };
 
+        handleCheckbox = e => {
+          this.setState({padding: !this.state.padding})
+        }
+
         handleSubmit = e => {
-          const { formValue } = this.state;
-          const blobs = blobify(formValue);
-          console.log(blobs)
+          const { formValue, padding } = this.state;
+          const blobs = blobify(formValue, padding);
           this.setState({
-            blobText: blobs,
-            formValue: ''
+            blobText: blobs
           });
           e.preventDefault();
         };
 
         render() {
           return (
-            <div>
+            <div className="page">
               <form className="blobForm" onSubmit={this.handleSubmit}>
-                <label htmlFor="blob">Enter text: </label>
-                <input
-                  type="text"
-                  id="blob"
-                  name="blob"
-                  onChange={this.handleChange}
-                  value={this.state.formValue}
-                />
-                <input type="submit" value="blobify" />
+                <div className="blobForm-text">
+                  <label htmlFor="blob">Enter text: </label>
+                  <input
+                    type="text"
+                    id="blob"
+                    name="blob"
+                    onChange={this.handleChange}
+                    value={this.state.formValue}
+                  />
+                  <input className="formSubmit" type="submit" value="Blobify" />
+                </div>
+                <div className="blobForm-padding">
+                  <input type="checkbox" name="padding" checked={this.state.padding} onChange={this.handleCheckbox} />
+                  <label htmlFor="padding">Padding</label>
+                </div>
               </form>
               <div className="blobText">{this.state.blobText}</div>
             </div>
