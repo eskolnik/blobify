@@ -86,6 +86,9 @@
                   />
                   <input className="formSubmit" type="submit" value="Blobify" />
                 </div>
+                <div className="blobForm-warning">
+                  Max Length {this.state.padding ? 10 : 11} characters
+                </div>
                 <div className="blobForm-padding">
                   <input type="checkbox" name="padding" checked={this.state.padding} onChange={this.handleCheckbox} />
                   <label htmlFor="padding">Padding</label>
