@@ -50,7 +50,8 @@
           this.state={
             blobText: '',
             formValue: '',
-            padding: true
+            padding: true,
+            invert: false,
           }
         }
 
@@ -58,13 +59,17 @@
           this.setState({ formValue: e.target.value });
         };
 
-        handleCheckbox = e => {
+        handlePadding = e => {
           this.setState({padding: !this.state.padding})
         }
 
+        handleInvert = e => {
+          this.setState({invert: !this.state.padding})
+        }
+
         handleSubmit = e => {
-          const { formValue, padding } = this.state;
-          const blobs = blobify(formValue, padding);
+          const { formValue, padding, invert } = this.state;
+          const blobs = blobify(formValue, padding, invert);
           this.setState({
             blobText: blobs
           });
@@ -90,8 +95,12 @@
                   Max Length {this.state.padding ? 10 : 11} characters
                 </div>
                 <div className="blobForm-padding">
-                  <input type="checkbox" name="padding" checked={this.state.padding} onChange={this.handleCheckbox} />
+                  <input type="checkbox" name="padding" checked={this.state.padding} onChange={this.handlePadding} />
                   <label htmlFor="padding">Padding</label>
+                </div>
+                <div className="blobForm-invert">
+                  <input type="checkbox" name="invert" checked={this.state.invert} onChange={this.handleInvert} />
+                  <label htmlFor="invert">Invert</label>
                 </div>
               </form>
               <div className="blobText">{this.state.blobText}</div>
